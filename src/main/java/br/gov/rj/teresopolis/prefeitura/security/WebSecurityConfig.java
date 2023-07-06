@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.POST,"/endereco/**","/pessoa/**","/agendamento/**","/anexo/**").permitAll()
                     .requestMatchers(HttpMethod.GET,"/servico/**").permitAll()
                     .requestMatchers(HttpMethod.GET,"/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/orgao/**", "/servico/**", "/roles/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/orgao/**", "/servico/**", "/roles/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/orgao/**", "/servico/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/endereco/**", "/endereco/**","/agendamento/**").hasAnyRole("USER", "ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
