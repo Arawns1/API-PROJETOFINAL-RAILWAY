@@ -22,7 +22,8 @@ public class UserService {
 	UserRepository userRepository;
 
 	ModelMapper modelMapper = new ModelMapper();
-
+	
+	@Transactional
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username).orElse(null);
 	}
