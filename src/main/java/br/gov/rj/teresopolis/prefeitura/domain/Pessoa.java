@@ -118,6 +118,7 @@ public class Pessoa {
 	public void setDataRegistro(LocalDate dataRegistro) {
 		this.dataRegistro = dataRegistro;
 	}
+
 	public String getCpfCnpj() {
 		return cpfCnpj;
 	}
@@ -158,11 +159,5 @@ public class Pessoa {
 		this.endereco = endereco;
 	}
 
-	@Override
-	public String toString() {
-		return "Pessoa [pessoaId=" + pessoaId + ", telefone=" + telefone + ", email=" + email + ", nomeRazaoSocial="
-				+ nomeRazaoSocial + ", dataRegistro=" + dataRegistro + ", cpfCnpj=" + cpfCnpj
-				+ ", identidadeInscricaoMunicipal=" + identidadeInscricaoMunicipal + ", preferencial=" + preferencial;
-	}
 
 }

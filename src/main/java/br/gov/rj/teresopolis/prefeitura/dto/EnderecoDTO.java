@@ -60,4 +60,5 @@ public class EnderecoDTO {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
+	
 }

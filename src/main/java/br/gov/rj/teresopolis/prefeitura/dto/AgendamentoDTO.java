@@ -26,6 +26,9 @@ public class AgendamentoDTO {
 		this.anexos = anexos;
 	}
 	
+	public AgendamentoDTO() {
+	}
+
 	public UUID getAgendamentoId() {
 		return agendamentoId;
 	}

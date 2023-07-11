@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Pessoa;
+import br.gov.rj.teresopolis.prefeitura.dto.EnderecoDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.PessoaDTO;
 import br.gov.rj.teresopolis.prefeitura.exceptions.NoSuchElementException;
 import br.gov.rj.teresopolis.prefeitura.repositories.PessoaRepository;
@@ -44,7 +45,10 @@ public class PessoaService {
 
 	public PessoaDTO criarPessoa(Pessoa pessoa) {
 		Pessoa pessoaSalvo = pessoaRepository.save(pessoa);
-		return modelMapper.map(pessoaSalvo, PessoaDTO.class);
+		EnderecoDTO enderecoDTO = modelMapper.map(pessoaSalvo.getEndereco(), EnderecoDTO.class);
+		PessoaDTO pessoaDto = modelMapper.map(pessoaSalvo, PessoaDTO.class);
+		pessoaDto.setEndereco(enderecoDTO);
+		return pessoaDto;
 	}
 
 	public PessoaDTO atualizarPessoa(UUID id, Pessoa pessoa) {

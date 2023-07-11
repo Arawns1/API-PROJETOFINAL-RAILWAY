@@ -38,6 +38,17 @@ public class AgendamentoController {
 	public Agendamento findId(@PathVariable("id") UUID id) {
 		return agendamentoService.obterAgendamentoPorId(id);
 	}
+	
+	
+	
+	  @GetMapping("/lista/dia/{dia}") //2023-07-01
+	  
+	  @Operation(summary = "Encontra agendamento por dia", description =
+	  "Encontrar agendamento por dia") public List<Agendamento>
+	  findId(@PathVariable("dia") String dia) { return
+	  agendamentoService.obterAgendamentoPorDia(dia); }
+	 
+	
 
 	@PostMapping("/inserir")
 	@Operation(summary = "Inserir agendamento no banco de dados", description = "Listagem dos agendamentos no banco de dados")

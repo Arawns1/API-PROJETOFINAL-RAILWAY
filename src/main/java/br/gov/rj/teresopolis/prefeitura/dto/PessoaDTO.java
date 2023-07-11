@@ -1,9 +1,10 @@
 package br.gov.rj.teresopolis.prefeitura.dto;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class PessoaDTO {
-	private Integer pessoaId;
+	private UUID pessoaId;
 	private String telefone;
 	private String email;
 	private String nomeRazaoSocial;
@@ -13,10 +14,11 @@ public class PessoaDTO {
 	private boolean preferencial;
 	private EnderecoDTO endereco;
 	
-	public Integer getPessoaId() {
+	
+	public UUID getPessoaId() {
 		return pessoaId;
 	}
-	public void setPessoaId(Integer pessoaId) {
+	public void setPessoaId(UUID pessoaId) {
 		this.pessoaId = pessoaId;
 	}
 	public String getTelefone() {
@@ -67,5 +69,6 @@ public class PessoaDTO {
 	public void setEndereco(EnderecoDTO endereco) {
 		this.endereco = endereco;
 	}
+	
 	
 }
