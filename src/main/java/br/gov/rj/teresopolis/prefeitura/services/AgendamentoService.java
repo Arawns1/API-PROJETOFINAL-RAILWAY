@@ -3,6 +3,7 @@ package br.gov.rj.teresopolis.prefeitura.services;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class AgendamentoService {
 		return agendamentoRepository.findAll();
 	}
 
-	public Agendamento obterAgendamentoPorId(int id) {
+	public Agendamento obterAgendamentoPorId(UUID id) {
 		Agendamento agendamento = agendamentoRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Não foi encontrado o agendamento de id= " + id));
 		return agendamento;
@@ -44,7 +45,7 @@ public class AgendamentoService {
 		return modelMapper.map(agendamentoSalvo, AgendamentoDTO.class);
 	}
 
-	public AgendamentoDTO atualizarAgendamento(Integer id, Agendamento agendamento) {
+	public AgendamentoDTO atualizarAgendamento(UUID id, Agendamento agendamento) {
 		Optional<Agendamento> agendamentoExistenteOptional = agendamentoRepository.findById(id);
 		if (agendamentoExistenteOptional.isPresent()) {
 			Agendamento agendamentoExistente = agendamentoExistenteOptional.get();
@@ -70,7 +71,7 @@ public class AgendamentoService {
 		return agendamentoSalvo;
 	}
 
-	public void excluirAgendamento(int id) {
+	public void excluirAgendamento(UUID id) {
 		agendamentoRepository.deleteById(id);
 	}
 }

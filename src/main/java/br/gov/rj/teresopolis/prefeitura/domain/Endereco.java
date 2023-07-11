@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,9 +28,9 @@ import jakarta.validation.constraints.Pattern;
 public class Endereco {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.UUID)
 	@Column(name= "end_cd_id")
-	private Integer enderecoId;
+	private UUID enderecoId;
 	
 
 	
@@ -76,7 +77,7 @@ public class Endereco {
 		super();
 	}
 
-	public Endereco(Integer enderecoId,
+	public Endereco(UUID enderecoId,
 			@NotBlank(message = "O campo CEP é obrigatório.") @NotNull(message = "O campo CEP é obrigatório.") @Pattern(regexp = "[0-9]{5}-[0-9]{3}", message = "O CEP deve estar no formato 99999-999.") String cep,
 			@NotBlank(message = "O campo logradouro é obrigatório.") @NotNull(message = "O campo logradouro é obrigatório.") String logradouro,
 			@NotBlank(message = "O campo bairro é obrigatório.") @NotNull(message = "O nome da bairro é obrigatório.") String bairro,
@@ -96,12 +97,11 @@ public class Endereco {
 		this.pessoas = pessoas;
 	}
 
-
-	public Integer getEnderecoId() {
+	public UUID getEnderecoId() {
 		return enderecoId;
 	}
 
-	public void setEnderecoId(Integer enderecoId) {
+	public void setEnderecoId(UUID enderecoId) {
 		this.enderecoId = enderecoId;
 	}
 

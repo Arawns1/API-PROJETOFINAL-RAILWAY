@@ -2,6 +2,7 @@ package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,7 +39,7 @@ public class ImagemController {
 
 	@GetMapping("/lista/{id}")
 	@Operation(summary = "Encontra imagem por id", description = "Encontrar imagem por id")
-	public ImagemDTO findId(@PathVariable("id") Integer id) {
+	public ImagemDTO findId(@PathVariable("id") UUID id) {
 		return imagemService.obterImagemPorId(id);
 	}
 
@@ -63,7 +64,7 @@ public class ImagemController {
 
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary = "Deletar imagem", description = "Deletar categorias")
-	public void deletarImagem(@PathVariable("id") Integer id) {
+	public void deletarImagem(@PathVariable("id") UUID id) {
 		imagemService.excluirImagem(id);
 	}
 

@@ -3,11 +3,11 @@ package br.gov.rj.teresopolis.prefeitura.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import br.gov.rj.teresopolis.prefeitura.domain.Imagem;
 import br.gov.rj.teresopolis.prefeitura.dto.ImagemDTO;
@@ -42,7 +42,7 @@ public class ImagemService {
 		return imagemRepository.save(imagem);
 	}
 	
-	public ImagemDTO obterImagemPorId(int id) {
+	public ImagemDTO obterImagemPorId(UUID id) {
 		Optional<Imagem> imagemEncontrado = imagemRepository.findById(id);
 		if (imagemEncontrado.isPresent()) {
 			ImagemDTO imagemDto = modelMapper.map(imagemEncontrado.get(), ImagemDTO.class);
@@ -52,7 +52,7 @@ public class ImagemService {
 		}
 	}
 
-	public void excluirImagem(int id) {
+	public void excluirImagem(UUID id) {
 		imagemRepository.deleteById(id);
 	}
 	

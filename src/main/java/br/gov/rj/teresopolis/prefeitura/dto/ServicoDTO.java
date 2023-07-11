@@ -1,16 +1,19 @@
 package br.gov.rj.teresopolis.prefeitura.dto;
 
+import java.util.UUID;
+
 public class ServicoDTO {
-	private Integer servicoId;
+	private UUID servicoId;
 	private String nome;
 	private String tipoServico;
 	private ImagemDTO imagemDTO;
 
-	public Integer getServicoId() {
+
+	public UUID getServicoId() {
 		return servicoId;
 	}
 
-	public void setServicoId(Integer servicoId) {
+	public void setServicoId(UUID servicoId) {
 		this.servicoId = servicoId;
 	}
 

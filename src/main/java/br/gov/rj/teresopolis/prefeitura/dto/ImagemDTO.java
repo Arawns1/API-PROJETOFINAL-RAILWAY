@@ -1,16 +1,18 @@
 package br.gov.rj.teresopolis.prefeitura.dto;
 
+import java.util.UUID;
+
 public class ImagemDTO {
-	private Integer imagemId;
+	private UUID imagemId;
 	private byte[] dados;
 	private String tipo;
 	private String nome;
-	
-	public Integer getImagemId() {
+
+	public UUID getImagemId() {
 		return imagemId;
 	}
 
-	public void setImagemId(Integer imagemId) {
+	public void setImagemId(UUID imagemId) {
 		this.imagemId = imagemId;
 	}
 

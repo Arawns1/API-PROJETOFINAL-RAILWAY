@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,9 +29,9 @@ import jakarta.persistence.Table;
 public class Servico {
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.UUID)
 	@Column(name= "serv_cd_id")
-    private Integer servicoId;
+    private UUID servicoId;
 	
     @Column(name= "serv_tx_nome")
     private String nome;
@@ -52,11 +53,11 @@ public class Servico {
     private Imagem imagem;
     
 
-	public Integer getServicoId() {
+	public UUID getServicoId() {
 		return servicoId;
 	}
 
-	public void setServicoId(Integer servicoId) {
+	public void setServicoId(UUID servicoId) {
 		this.servicoId = servicoId;
 	}
 

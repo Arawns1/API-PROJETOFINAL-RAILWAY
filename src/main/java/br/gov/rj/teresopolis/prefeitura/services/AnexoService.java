@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class AnexoService {
 		return "Anexos salvos com sucesso!";
 	}
 
-	public AnexoDTO obterAnexoPorId(int id) {
+	public AnexoDTO obterAnexoPorId(UUID id) {
 		Optional<Anexo> anexoEncontrado = anexoRepository.findById(id);
 		if (anexoEncontrado.isPresent()) {
 			AnexoDTO anexoDto = modelMapper.map(anexoEncontrado.get(), AnexoDTO.class);
@@ -72,11 +73,11 @@ public class AnexoService {
 		}
 	}
 
-	public void excluirAnexo(int id) {
+	public void excluirAnexo(UUID id) {
 		anexoRepository.deleteById(id);
 	}
 	
-	public List<AnexoDTO> obterAnexosByAgendamento(Integer id){
+	public List<AnexoDTO> obterAnexosByAgendamento(UUID id){
 		List<Anexo> anexos = anexoRepository.findAnexosByAgendamento(id);
 		
 		List<AnexoDTO> anexosDtoList = new ArrayList<>();

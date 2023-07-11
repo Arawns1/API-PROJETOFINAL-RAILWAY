@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,9 +27,9 @@ import jakarta.validation.constraints.NotBlank;
 public class Orgao {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name= "org_cd_id")
-    private Integer orgaoId;
+    private UUID orgaoId;
 
 	@NotBlank(message="O orgão não pode ser nulo")
 	@Column(name= "org_tx_nome")
@@ -42,11 +43,11 @@ public class Orgao {
 	@OneToMany(mappedBy="orgao")
 	private List<Servico> servicos;
 
-	public Integer getOrgaoId() {
+	public UUID getOrgaoId() {
 		return orgaoId;
 	}
 
-	public void setOrgaoId(Integer orgaoId) {
+	public void setOrgaoId(UUID orgaoId) {
 		this.orgaoId = orgaoId;
 	}
 
@@ -73,7 +74,5 @@ public class Orgao {
 	public void setServicos(List<Servico> servicos) {
 		this.servicos = servicos;
 	}
-	
-   
 	
 }

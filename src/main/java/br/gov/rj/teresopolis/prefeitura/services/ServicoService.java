@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class ServicoService {
 		return servicosDTO;
 	}
 
-	public ServicoDTO obterServicoPorId(Integer id) {
+	public ServicoDTO obterServicoPorId(UUID id) {
 		Servico servico = servicoRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Não foi encontrada a servico de id= " + id));
 		
@@ -113,7 +114,7 @@ public class ServicoService {
 	}
 	
 	
-	public ServicoDTO atualizarServico(Integer id, Servico servico) {
+	public ServicoDTO atualizarServico(UUID id, Servico servico) {
 		Optional<Servico> servicoExistenteOptional = servicoRepository.findById(id);
 		if (servicoExistenteOptional.isPresent()) {
 			Servico servicoExistente = servicoExistenteOptional.get();
@@ -126,7 +127,7 @@ public class ServicoService {
 		}
 	}
 
-	public void deletarServico(int id) {
+	public void deletarServico(UUID id) {
 		servicoRepository.deleteById(id);
 	}
 

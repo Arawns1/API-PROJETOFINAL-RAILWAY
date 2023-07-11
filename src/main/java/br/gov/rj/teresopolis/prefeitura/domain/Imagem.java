@@ -2,6 +2,7 @@ package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 
@@ -28,9 +29,9 @@ import jakarta.persistence.Table;
 public class Imagem {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "img_cd_id")
-	private Integer imagemId;
+	private UUID imagemId;
 
 	@Lob
 	@JdbcTypeCode(Types.BINARY)
@@ -57,11 +58,11 @@ public class Imagem {
 		super();
 	}
 
-	public Integer getImagemId() {
+	public UUID getImagemId() {
 		return imagemId;
 	}
 
-	public void setImagemId(Integer imagemId) {
+	public void setImagemId(UUID imagemId) {
 		this.imagemId = imagemId;
 	}
 

@@ -2,6 +2,7 @@ package br.gov.rj.teresopolis.prefeitura.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class OrgaoService {
 		return orgaoRepository.findAll();
 	}
 
-	public OrgaoDTO obterOrgaoPorId(int id) {
+	public OrgaoDTO obterOrgaoPorId(UUID id) {
 		Orgao orgao = orgaoRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Não foi encontrado o orgão de id= " + id));
 		OrgaoDTO orgaoDTO = modelMapper.map(orgao, OrgaoDTO.class);
@@ -39,7 +40,7 @@ public class OrgaoService {
 		return modelMapper.map(orgaoSalvo, OrgaoDTO.class);
 	}
 
-	public OrgaoDTO atualizarOrgao(Integer id, Orgao orgao) {
+	public OrgaoDTO atualizarOrgao(UUID id, Orgao orgao) {
 		Optional<Orgao> orgaoExistenteOptional = orgaoRepository.findById(id);
 		if (orgaoExistenteOptional.isPresent()) {
 			Orgao orgaoExistente = orgaoExistenteOptional.get();
@@ -52,7 +53,7 @@ public class OrgaoService {
 		}
 	}
 
-	public void excluirOrgao(int id) {
+	public void excluirOrgao(UUID id) {
 		orgaoRepository.deleteById(id);
 	}
 }

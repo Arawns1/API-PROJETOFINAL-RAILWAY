@@ -2,6 +2,7 @@ package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
@@ -38,9 +39,9 @@ import jakarta.validation.constraints.Size;
 @GroupSequenceProvider(value = PessoaGroupSequenceProvider.class)
 public class Pessoa {
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.UUID)
 	@Column(name= "pes_cd_id")
-    private Integer pessoaId;
+    private UUID pessoaId;
     
     @NotBlank(message ="O telefone não pode ser nulo")
 	@Column(name= "pes_tx_telefone")
@@ -78,11 +79,11 @@ public class Pessoa {
     @JoinColumn(name = "fk_endereco_id", referencedColumnName = "end_cd_id")
     private Endereco endereco;
 
-	public Integer getPessoaId() {
+	public UUID getPessoaId() {
 		return pessoaId;
 	}
 
-	public void setPessoaId(Integer pessoaId) {
+	public void setPessoaId(UUID pessoaId) {
 		this.pessoaId = pessoaId;
 	}
 

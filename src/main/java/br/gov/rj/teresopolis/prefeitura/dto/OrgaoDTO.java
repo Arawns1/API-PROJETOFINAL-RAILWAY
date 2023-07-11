@@ -1,13 +1,15 @@
 package br.gov.rj.teresopolis.prefeitura.dto;
 
+import java.util.UUID;
+
 public class OrgaoDTO {
-	private Integer orgaoId;
+	private UUID orgaoId;
 	private String nome;
 	
-	public Integer getOrgaoId() {
+	public UUID getOrgaoId() {
 		return orgaoId;
 	}
-	public void setOrgaoId(Integer orgaoId) {
+	public void setOrgaoId(UUID orgaoId) {
 		this.orgaoId = orgaoId;
 	}
 	public String getNome() {
@@ -16,5 +18,10 @@ public class OrgaoDTO {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	@Override
+	public String toString() {
+		return "orgaoId=" + orgaoId + ", nome=" + nome;
+	}
+	
 	
 }

@@ -2,6 +2,7 @@ package br.gov.rj.teresopolis.prefeitura.domain.security;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -29,9 +30,9 @@ import jakarta.validation.constraints.Size;
 
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "usu_cd_id")
-	private Integer id;
+	private UUID id;
 
 	@Size(max = 20)
 	@Column(name = "usu_tx_nome_usuario", unique = true)
@@ -66,8 +67,12 @@ public class User {
 	}
 
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public User( String username,
@@ -81,9 +86,6 @@ public class User {
 		this.orgao = orgao;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getUsername() {
 		return username;
@@ -124,5 +126,7 @@ public class User {
 	public void setOrgao(Orgao orgao) {
 		this.orgao = orgao;
 	}
+	
+	
 
 }

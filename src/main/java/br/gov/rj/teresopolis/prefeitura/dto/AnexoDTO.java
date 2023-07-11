@@ -1,17 +1,21 @@
 package br.gov.rj.teresopolis.prefeitura.dto;
 
+import java.util.UUID;
+
 public class AnexoDTO {
-	private Integer anexoId;
+	private UUID anexoId;
 	private byte[] dados;
 	private String tipo;
 	private String nome;
-	private Integer agendamentoId;
+	private UUID agendamentoId;
 	
-	public Integer getAnexoId() {
-		return anexoId;
-	}
-	public void setAnexoId(Integer anexoId) {
+	public AnexoDTO(UUID anexoId, byte[] dados, String tipo, String nome, UUID agendamentoId) {
+		super();
 		this.anexoId = anexoId;
+		this.dados = dados;
+		this.tipo = tipo;
+		this.nome = nome;
+		this.agendamentoId = agendamentoId;
 	}
 	public byte[] getDados() {
 		return dados;
@@ -31,10 +35,16 @@ public class AnexoDTO {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public Integer getAgendamentoId() {
+	public UUID getAnexoId() {
+		return anexoId;
+	}
+	public void setAnexoId(UUID anexoId) {
+		this.anexoId = anexoId;
+	}
+	public UUID getAgendamentoId() {
 		return agendamentoId;
 	}
-	public void setAgendamentoId(Integer agendamentoId) {
+	public void setAgendamentoId(UUID agendamentoId) {
 		this.agendamentoId = agendamentoId;
 	}
 	

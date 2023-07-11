@@ -3,6 +3,7 @@ package br.gov.rj.teresopolis.prefeitura.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -54,7 +55,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO obterUserPorId(Integer id) {
+	public UserDTO obterUserPorId(UUID id) {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Não foi encontrado o user de id= " + id));
 
@@ -92,7 +93,7 @@ public class UserService {
 	 * " para ser atualizado"); } }
 	 */
 
-	public void deletarUser(int id) {
+	public void deletarUser(UUID id) {
 		userRepository.deleteById(id);
 	}
 

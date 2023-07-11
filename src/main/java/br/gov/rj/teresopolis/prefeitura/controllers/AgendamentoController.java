@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +35,7 @@ public class AgendamentoController {
 
 	@GetMapping("/lista/{id}")
 	@Operation(summary = "Encontra agendamento por id", description = "Encontrar agendamento por id")
-	public Agendamento findId(@PathVariable("id") Integer id) {
+	public Agendamento findId(@PathVariable("id") UUID id) {
 		return agendamentoService.obterAgendamentoPorId(id);
 	}
 
@@ -52,14 +53,14 @@ public class AgendamentoController {
 
 	@PutMapping("/atualizar/{id}")
 	@Operation(summary = "Atualiza o agendamento por id", description = "Atualizar agendamento")
-	public AgendamentoDTO atualizarEndereco(@PathVariable("id") Integer id,
+	public AgendamentoDTO atualizarEndereco(@PathVariable("id") UUID id,
 			@RequestBody Agendamento agendamentoSolicitado) {
 		return agendamentoService.atualizarAgendamento(id, agendamentoSolicitado);
 	}
 
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary = "Deletar agendamento", description = "Deletar categorias")
-	public void deletarAgendamento(@PathVariable("id") Integer id) {
+	public void deletarAgendamento(@PathVariable("id") UUID id) {
 		agendamentoService.excluirAgendamento(id);
 	}
 

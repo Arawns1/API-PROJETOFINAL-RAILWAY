@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.sql.Types;
+import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 
@@ -27,9 +28,9 @@ import jakarta.persistence.Table;
 public class Anexo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "anex_cd_id")
-	private Integer anexoId;
+	private UUID anexoId;
 
 	@Lob
 	@JdbcTypeCode(Types.BINARY)
@@ -57,11 +58,11 @@ public class Anexo {
 		this.nome = nome;
 	}
 
-	public Integer getAnexoId() {
+	public UUID getAnexoId() {
 		return anexoId;
 	}
 
-	public void setAnexoId(Integer anexoId) {
+	public void setAnexoId(UUID anexoId) {
 		this.anexoId = anexoId;
 	}
 

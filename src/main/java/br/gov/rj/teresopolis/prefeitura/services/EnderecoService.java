@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class EnderecoService {
 	}
 	
 
-	public EnderecoDTO atualizarEndereco(Integer id, Endereco endereco) {
+	public EnderecoDTO atualizarEndereco(UUID id, Endereco endereco) {
 		Optional<Endereco> enderecoExistenteOptional = enderecoRepository.findById(id);
 		if (enderecoExistenteOptional.isPresent()) {
 			Endereco enderecoExistente = enderecoExistenteOptional.get();
@@ -55,7 +56,7 @@ public class EnderecoService {
 		}
 	}
 
-	public EnderecoDTO obterEnderecoPorId(int id) {
+	public EnderecoDTO obterEnderecoPorId(UUID id) {
 		Endereco endereco = enderecoRepository.findById(id)
 				.orElseThrow(() -> new EnderecoNotFoundException(id));
 		EnderecoDTO enderecoDTO = modelMapper.map(endereco, EnderecoDTO.class);
@@ -72,7 +73,7 @@ public class EnderecoService {
 		return enderecosDTO;
 	}
 
-	public void deletarEndereco(Integer id) {
+	public void deletarEndereco(UUID id) {
 		Optional<Endereco> enderecoExistenteOptional = enderecoRepository.findById(id);
 		if (enderecoExistenteOptional.isPresent()) {
 			Endereco enderecoExistente = enderecoExistenteOptional.get();

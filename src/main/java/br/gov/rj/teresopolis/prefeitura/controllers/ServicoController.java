@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,7 +32,7 @@ public class ServicoController {
 	
 	@GetMapping("/lista/{id}")
 	@Operation(summary= "Encontra servico por id", description= "Encontrar servico por id")
-	public ServicoDTO findId(@PathVariable("id") Integer id) {
+	public ServicoDTO findId(@PathVariable("id") UUID id) {
 		return servicoService.obterServicoPorId(id);
 	}
 	
@@ -52,13 +53,13 @@ public class ServicoController {
 	
 	@PutMapping("/atualizar/{id}")
 	@Operation(summary= "Atualiza servico por id", description= "Atualiza servico")
-	public ServicoDTO atualizarServico(@PathVariable("id") Integer id, @RequestBody Servico servicoSolicitado) {
+	public ServicoDTO atualizarServico(@PathVariable("id") UUID id, @RequestBody Servico servicoSolicitado) {
 		return servicoService.atualizarServico(id, servicoSolicitado);
 	}
 	
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary= "Deleta servico", description= "Deleta servico")
-	public void deletarServico(@PathVariable("id") Integer id) {
+	public void deletarServico(@PathVariable("id") UUID id) {
 		servicoService.deletarServico(id);
 	}
 	

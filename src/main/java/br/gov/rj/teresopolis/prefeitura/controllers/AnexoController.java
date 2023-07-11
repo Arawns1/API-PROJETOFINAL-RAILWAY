@@ -3,6 +3,7 @@ package br.gov.rj.teresopolis.prefeitura.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -39,13 +40,13 @@ public class AnexoController {
 
 	@GetMapping("/lista/{id}")
 	@Operation(summary = "Encontra anexo por id", description = "Encontrar anexo por id")
-	public AnexoDTO findId(@PathVariable("id") Integer id) {
+	public AnexoDTO findId(@PathVariable("id") UUID id) {
 		return anexoService.obterAnexoPorId(id);
 	}
 	
 	@GetMapping("/lista/agendamento/{id}")
 	@Operation(summary = "Encontra anexo por id do agendamento", description = "Encontrar anexo por id do agendamento")
-	public List<AnexoDTO> obterAnexosByAgendamento(@PathVariable("id") Integer id) {
+	public List<AnexoDTO> obterAnexosByAgendamento(@PathVariable("id") UUID id) {
 		return anexoService.obterAnexosByAgendamento(id);
 	}
 
@@ -78,7 +79,7 @@ public class AnexoController {
 
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary = "Deletar anexo", description = "Deletar categorias")
-	public void deletarAnexo(@PathVariable("id") Integer id) {
+	public void deletarAnexo(@PathVariable("id") UUID id) {
 		anexoService.excluirAnexo(id);
 	}
 

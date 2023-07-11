@@ -1,5 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.domain.security;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,8 +15,8 @@ import jakarta.persistence.Table;
 @Table(name = "Cargo")
 public class Role {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, unique=true)
@@ -28,11 +30,11 @@ public class Role {
 		this.name = name;
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

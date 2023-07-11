@@ -2,6 +2,7 @@ package br.gov.rj.teresopolis.prefeitura.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -28,9 +29,9 @@ import jakarta.validation.constraints.FutureOrPresent;
 public class Agendamento {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name="age_cd_id")
-    private Integer agendamentoId;
+    private UUID agendamentoId;
 	
 	@Column(name="age_tx_descricao")
     private String descricao;
@@ -57,11 +58,11 @@ public class Agendamento {
 	@OneToMany(mappedBy="agendamento", fetch = FetchType.EAGER)
     private List<Anexo> anexos;
 
-	public Integer getAgendamentoId() {
+	public UUID getAgendamentoId() {
 		return agendamentoId;
 	}
 
-	public void setAgendamentoId(Integer agendamentoId) {
+	public void setAgendamentoId(UUID agendamentoId) {
 		this.agendamentoId = agendamentoId;
 	}
 

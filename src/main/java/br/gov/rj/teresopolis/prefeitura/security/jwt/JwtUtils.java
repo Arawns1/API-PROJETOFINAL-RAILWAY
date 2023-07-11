@@ -1,26 +1,19 @@
 package br.gov.rj.teresopolis.prefeitura.security.jwt;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.crypto.SecretKey;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.rj.teresopolis.prefeitura.domain.security.Role;
 import br.gov.rj.teresopolis.prefeitura.domain.security.User;
@@ -30,7 +23,6 @@ import br.gov.rj.teresopolis.prefeitura.services.UserService;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.persistence.EntityManager;
 
 @Component
 public class JwtUtils {
@@ -60,27 +52,55 @@ public class JwtUtils {
 		SecretKey sKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
 		User user = userService.findByUsername(userPrincipal.getUsername());
-
+		
 		UserDTO userDto = new UserDTO();
 		userDto.setId(user.getId());
 		userDto.setUsername(user.getUsername());
 		userDto.setEmail(user.getEmail());
-		
 
-		Map<String, String> userMap = new HashMap<String, String>();
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		userMap.put("user_id", userDto.getId());
 		userMap.put("name", userDto.getUsername());
 		userMap.put("email", userDto.getEmail());
+		
+		 Map<String, Object> orgaoMap = new HashMap<>();
+		 orgaoMap.put("nome", user.getOrgao().getNome());
+		 orgaoMap.put("id", user.getOrgao().getOrgaoId());
+		 userMap.put("orgao", orgaoMap);
+		 
+		 Map<String, Object> rolesMap = new HashMap<>();
+		 
+		 int[] index = { 0}; 
+		 authentication.getAuthorities().forEach(auth -> {
+		     rolesMap.put(Integer.toString(index[0]), auth.getAuthority());
+		     index[0]++;
+		 });
 
-		return Jwts.builder().setSubject(userPrincipal.getUsername()).setIssuedAt(new Date())
+			/*
+			 * authentication.getAuthorities().forEach(authority ->
+			 * System.out.println(authority));
+			 */
+		 userMap.put("roles", rolesMap);
+		 
+		return Jwts.builder()
+				.setSubject(userPrincipal.getUsername())
+				.setIssuedAt(new Date())
 				// .claim("user", userJson)
-				.setClaims(userMap).setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(sKey)
+				.setClaims(userMap)
+				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+				.signWith(sKey)
 				.compact();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
 		try {
 			SecretKey sKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-			return Jwts.parserBuilder().setSigningKey(sKey).build().parseClaimsJws(token).getBody().getSubject();
+			return (String) Jwts.parserBuilder().setSigningKey(sKey).build().parseClaimsJws(token).getBody().get("name");
+			/*
+			 * return
+			 * Jwts.parserBuilder().setSigningKey(sKey).build().parseClaimsJws(token).
+			 * getBody().getSubject();
+			 */
 		} catch (JwtException e) {
 			logger.error("Token JWT inválido: {}", e.getMessage());
 		}

@@ -1,7 +1,9 @@
 package br.gov.rj.teresopolis.prefeitura.dto;
 
+import java.util.UUID;
+
 public class EnderecoDTO {
-	private Integer enderecoId;
+	private UUID enderecoId;
 	private String cep;
 	private String logradouro;
 	private String bairro;
@@ -10,10 +12,10 @@ public class EnderecoDTO {
 	private String numero;
 	private String complemento;
 	
-	public Integer getEnderecoId() {
+	public UUID getEnderecoId() {
 		return enderecoId;
 	}
-	public void setEnderecoId(Integer enderecoId) {
+	public void setEnderecoId(UUID enderecoId) {
 		this.enderecoId = enderecoId;
 	}
 	public String getCep() {

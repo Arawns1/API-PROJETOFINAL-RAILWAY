@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class OrgaoController {
 
 	@GetMapping("/lista/{id}")
 	@Operation(summary = "Encontra orgao por id", description = "Encontrar orgao por id")
-	public OrgaoDTO findId(@PathVariable("id") Integer id) {
+	public OrgaoDTO findId(@PathVariable("id") UUID id) {
 		return orgaoService.obterOrgaoPorId(id);
 	}
 
@@ -45,13 +46,13 @@ public class OrgaoController {
 	@PutMapping("/atualizar/{id}")
 
 	@Operation(summary= "Atualiza orgao por id", description= "Atualiza orgao")
-	public OrgaoDTO atualizarOrgao(@PathVariable("id") Integer id, @RequestBody Orgao orgaoSolicitado) {
+	public OrgaoDTO atualizarOrgao(@PathVariable("id") UUID id, @RequestBody Orgao orgaoSolicitado) {
 		return orgaoService.atualizarOrgao(id, orgaoSolicitado);
 	}
 	
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary = "Deletar orgao", description = "Deletar categorias")
-	public void deletarOrgao(@PathVariable("id") Integer id) {
+	public void deletarOrgao(@PathVariable("id") UUID id) {
 		orgaoService.excluirOrgao(id);
 	}
 }

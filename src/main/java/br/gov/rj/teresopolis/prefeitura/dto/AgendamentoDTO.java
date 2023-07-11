@@ -2,10 +2,11 @@ package br.gov.rj.teresopolis.prefeitura.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class AgendamentoDTO {
 	
-	Integer agendamentoId;
+	UUID agendamentoId;
 	String descricao;
 	LocalDateTime horaInicial;
 	LocalDateTime horaFinal;
@@ -13,10 +14,22 @@ public class AgendamentoDTO {
 	ServicoDTO servico;
 	List<AnexoDTO>anexos;
 	
-	public Integer getAgendamentoId() {
+	public AgendamentoDTO(UUID agendamentoId, String descricao, LocalDateTime horaInicial, LocalDateTime horaFinal,
+			PessoaDTO pessoa, ServicoDTO servico, List<AnexoDTO> anexos) {
+		super();
+		this.agendamentoId = agendamentoId;
+		this.descricao = descricao;
+		this.horaInicial = horaInicial;
+		this.horaFinal = horaFinal;
+		this.pessoa = pessoa;
+		this.servico = servico;
+		this.anexos = anexos;
+	}
+	
+	public UUID getAgendamentoId() {
 		return agendamentoId;
 	}
-	public void setAgendamentoId(Integer agendamentoId) {
+	public void setAgendamentoId(UUID agendamentoId) {
 		this.agendamentoId = agendamentoId;
 	}
 	public String getDescricao() {

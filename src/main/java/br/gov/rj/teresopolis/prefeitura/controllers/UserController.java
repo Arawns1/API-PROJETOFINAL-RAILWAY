@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +25,7 @@ public class UserController {
 	
 	@GetMapping("/lista/{id}")
 	@Operation(summary= "Encontra user por id", description= "Encontrar user por id")
-	public UserDTO findId(@PathVariable("id") Integer id) {
+	public UserDTO findId(@PathVariable("id") UUID id) {
 		return userService.obterUserPorId(id);
 	}
 	
@@ -44,7 +45,7 @@ public class UserController {
 	
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary= "Deleta user", description= "Deleta user")
-	public void deletarUser(@PathVariable("id") Integer id) {
+	public void deletarUser(@PathVariable("id") UUID id) {
 		userService.deletarUser(id);
 	}
 

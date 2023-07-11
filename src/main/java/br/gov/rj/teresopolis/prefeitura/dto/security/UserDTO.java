@@ -2,20 +2,21 @@ package br.gov.rj.teresopolis.prefeitura.dto.security;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import br.gov.rj.teresopolis.prefeitura.dto.OrgaoDTO;
 
 public class UserDTO {
-	private Integer id;
+	private UUID id;
 	private String username;
 	private String email;
 	private Set<String> roles = new HashSet<>();
 	private OrgaoDTO orgao;
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 	public String getUsername() {

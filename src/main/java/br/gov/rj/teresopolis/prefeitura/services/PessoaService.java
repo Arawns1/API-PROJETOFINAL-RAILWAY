@@ -3,6 +3,7 @@ package br.gov.rj.teresopolis.prefeitura.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class PessoaService {
 		return pessoasDTO;
 	}
 
-	public PessoaDTO obterPessoaPorId(Integer id) {
+	public PessoaDTO obterPessoaPorId(UUID id) {
 		Pessoa pessoa = pessoaRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Não foi encontrada a pessoa de id= " + id));
 		PessoaDTO pessoaDTO = modelMapper.map(pessoa, PessoaDTO.class);
@@ -46,7 +47,7 @@ public class PessoaService {
 		return modelMapper.map(pessoaSalvo, PessoaDTO.class);
 	}
 
-	public PessoaDTO atualizarPessoa(Integer id, Pessoa pessoa) {
+	public PessoaDTO atualizarPessoa(UUID id, Pessoa pessoa) {
 		Optional<Pessoa> pessoaExistenteOptional = pessoaRepository.findById(id);
 		if (pessoaExistenteOptional.isPresent()) {
 			Pessoa pessoaExistente = pessoaExistenteOptional.get();
@@ -60,7 +61,7 @@ public class PessoaService {
 	}
 
 
-	public void deletarPessoa(Integer id) {
+	public void deletarPessoa(UUID id) {
 		pessoaRepository.deleteById(id);
 	}
 }

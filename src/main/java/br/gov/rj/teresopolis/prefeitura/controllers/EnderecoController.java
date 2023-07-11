@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class EnderecoController {
 	
 	@GetMapping("/lista/{id}")
 	@Operation(summary= "Encontra endereço por id", description= "Encontrar endereço por id")
-	public EnderecoDTO findId(@PathVariable("id") Integer id) {
+	public EnderecoDTO findId(@PathVariable("id") UUID id) {
 		return enderecoService.obterEnderecoPorId(id);
 	}
 	
@@ -57,13 +58,13 @@ public class EnderecoController {
 	
 	@PutMapping("/atualizar/{id}")
 	@Operation(summary= "Atualiza endereço por id", description= "Atualiza endereço")
-	public EnderecoDTO atualizarEndereco(@PathVariable("id") Integer id, @RequestBody Endereco enderecoSolicitado) {
+	public EnderecoDTO atualizarEndereco(@PathVariable("id") UUID id, @RequestBody Endereco enderecoSolicitado) {
 		return enderecoService.atualizarEndereco(id, enderecoSolicitado);
 	}
 	
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary= "Deleta endereço", description= "Deleta endereço")
-	public void deletarEndereco(@PathVariable("id") Integer id) {
+	public void deletarEndereco(@PathVariable("id") UUID id) {
 		enderecoService.deletarEndereco(id);
 	}
 	

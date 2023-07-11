@@ -1,6 +1,7 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ public class PessoaController {
 	
 	@GetMapping("/lista/{id}")
 	@Operation(summary= "Encontra pessoa por id", description= "Encontrar pessoa por id")
-	public PessoaDTO findId(@PathVariable("id") Integer id) {
+	public PessoaDTO findId(@PathVariable("id") UUID id) {
 		return pessoaService.obterPessoaPorId(id);
 	}
 	
@@ -48,13 +49,13 @@ public class PessoaController {
 	
 	@PutMapping("/atualizar/{id}")
 	@Operation(summary= "Atualiza pessoa por id", description= "Atualiza pessoa")
-	public PessoaDTO atualizarPessoa(@PathVariable("id") Integer id, @RequestBody Pessoa pessoaSolicitado) {
+	public PessoaDTO atualizarPessoa(@PathVariable("id") UUID id, @RequestBody Pessoa pessoaSolicitado) {
 		return pessoaService.atualizarPessoa(id, pessoaSolicitado);
 	}
 	
 	@DeleteMapping("/deletar/{id}")
 	@Operation(summary= "Deleta pessoa", description= "Deleta pessoa")
-	public void deletarPessoa(@PathVariable("id") Integer id) {
+	public void deletarPessoa(@PathVariable("id") UUID id) {
 		pessoaService.deletarPessoa(id);
 	}
 	
