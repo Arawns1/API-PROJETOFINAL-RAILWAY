@@ -193,7 +193,6 @@ public class AgendamentoService {
 										  hora);
 	}
 	
-	
 	/**
 	 * Esta função verifica se a pessoa ou endereço já existe no banco. 
 	 * Dependendo da existência ou não da pessoa ou endereço realiza a criação ou alteração
@@ -208,10 +207,11 @@ public class AgendamentoService {
 		
 		//Se a pessoa existe verifica se o endereço é o mesmo e se já está vinculado a ela
 		if (pessoa.isPresent()) {
-			endereco = enderecoRepository.findById(pessoa.get().getEndereco().getEnderecoId());
+			Optional<Endereco> enderecoEncontrado = enderecoRepository.findByCep(agendamentoRequestDto.getEnderecoDto().getCep());
 		
-			if (endereco.isPresent()) {
-				return pessoa.get();
+			if (enderecoEncontrado.isPresent() && !(enderecoEncontrado.get().getCep()).equals(agendamentoRequestDto.getEnderecoDto().getCep())) {
+				pessoa.get().setEndereco(enderecoEncontrado.get());
+				return pessoaRepository.save(pessoa.get());
 			}
 			//Se a pessoa existe, mas o endereço não. Salva o novo endereço e atualiza a pessoa.
 			else {
