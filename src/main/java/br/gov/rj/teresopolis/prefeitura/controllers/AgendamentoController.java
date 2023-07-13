@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Agendamento;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoDTO;
+import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoRequestDTO;
+import br.gov.rj.teresopolis.prefeitura.dto.security.MessageResponseDTO;
 import br.gov.rj.teresopolis.prefeitura.services.AgendamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
@@ -38,24 +40,26 @@ public class AgendamentoController {
 	public Agendamento findId(@PathVariable("id") UUID id) {
 		return agendamentoService.obterAgendamentoPorId(id);
 	}
-	
-	
-	
-	  @GetMapping("/lista/dia/{dia}") //2023-07-01
-	  
-	  @Operation(summary = "Encontra agendamento por dia", description =
-	  "Encontrar agendamento por dia") public List<Agendamento>
-	  findId(@PathVariable("dia") String dia) { return
-	  agendamentoService.obterAgendamentoPorDia(dia); }
-	 
-	
+
+	@GetMapping("/lista/dia/{dia}") // 2023-07-01
+	@Operation(summary = "Encontra agendamento por dia", description = "Encontrar agendamento por dia")
+	public List<Agendamento> findId(@PathVariable("dia") String dia) {
+		return agendamentoService.obterAgendamentoPorDia(dia);
+	}
 
 	@PostMapping("/inserir")
-	@Operation(summary = "Inserir agendamento no banco de dados", description = "Listagem dos agendamentos no banco de dados")
+	@Operation(summary = "Inserir agendamento no banco de dados", description = "Inserir os agendamentos no banco de dados")
 	public AgendamentoDTO cadastrarAgendamento(@Valid @RequestBody Agendamento agendamento) throws MessagingException {
 		return agendamentoService.criarAgendamento(agendamento);
 	}
-
+	
+	@PostMapping("/inserir/dto")
+	@Operation(summary = "Cria um novo agendamento no banco recebendo um DTO", description = "Inserir agendamento no banco de dados passando todos os dados em apenas uma requisição")
+	public MessageResponseDTO cadastrarAgendamentoDTO(@RequestBody AgendamentoRequestDTO agendamentoRequestDto) {
+		return agendamentoService.criarAgendamentoDto(agendamentoRequestDto);
+	}
+	
+	
 	@PostMapping("/inserir/email")
 	@Operation(summary = "Envio de email e salvamento de agendamento no banco de dados", description = "Envio de agendamento por email e salvo no banco de dados")
 	public Agendamento cadastroEnvioEmail(@Valid @RequestBody Agendamento agendamento) throws MessagingException {

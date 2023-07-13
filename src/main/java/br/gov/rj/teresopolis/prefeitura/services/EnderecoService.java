@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -37,6 +38,7 @@ public class EnderecoService {
 		this.enderecoRepository = enderecoRepository;
 	}
 
+	@Transactional
 	public EnderecoDTO criarEndereco(Endereco endereco) {
 		Endereco enderecoSalvo = enderecoRepository.save(endereco);
 		return modelMapper.map(enderecoSalvo, EnderecoDTO.class);

@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Anexo;
+import br.gov.rj.teresopolis.prefeitura.dto.AnexoDTO;
 
 @Repository
 public interface AnexoRepository extends JpaRepository<Anexo, UUID> {
 
 	@Query("FROM Anexo a where a.agendamento.agendamentoId = :idAgendamento")
 	List<Anexo> findAnexosByAgendamento(UUID id);
-	
+
 }

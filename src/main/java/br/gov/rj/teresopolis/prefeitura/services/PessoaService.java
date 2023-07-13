@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Pessoa;
 import br.gov.rj.teresopolis.prefeitura.dto.EnderecoDTO;
@@ -42,7 +43,7 @@ public class PessoaService {
 		PessoaDTO pessoaDTO = modelMapper.map(pessoa, PessoaDTO.class);
 		return pessoaDTO;
 	}
-
+	@Transactional
 	public PessoaDTO criarPessoa(Pessoa pessoa) {
 		Pessoa pessoaSalvo = pessoaRepository.save(pessoa);
 		EnderecoDTO enderecoDTO = modelMapper.map(pessoaSalvo.getEndereco(), EnderecoDTO.class);
