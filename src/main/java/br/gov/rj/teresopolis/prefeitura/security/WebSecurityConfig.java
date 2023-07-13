@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**" ).permitAll() //define as rotas publicas/abertas
                     .requestMatchers("/actuator/**", "/imagem/**").hasRole("ADMIN") // autoriza o acesso a rotas por perfil
                     .requestMatchers(HttpMethod.POST,"/endereco/**","/pessoa/**","/agendamento/**","/anexo/**").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/servico/**").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/servico/**", "/agendamento/lista/dia/**").permitAll()
                     .requestMatchers(HttpMethod.GET,"/**").hasAnyRole("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/orgao/**", "/servico/**", "/roles/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/orgao/**", "/servico/**").hasRole("ADMIN")

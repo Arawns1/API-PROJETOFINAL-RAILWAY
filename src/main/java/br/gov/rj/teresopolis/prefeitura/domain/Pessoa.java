@@ -59,8 +59,7 @@ public class Pessoa {
 	@Column(name= "pes_dt_data_registro")
     private LocalDate dataRegistro;
     
-    @CPF(groups = PessoaFisica.class)
-    @CNPJ(groups = PessoaJuridica.class)
+
     @Size(max = 14, message ="O CPF ou CNPJ deve ter no máximo 14 digitos")
     @Column(name = "pes_tx_CPF_CNPJ")
     private String cpfCnpj;
