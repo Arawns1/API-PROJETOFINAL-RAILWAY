@@ -77,7 +77,7 @@ public class AgendamentoService {
 	}
 
 	public AgendamentoDTO criarAgendamento(Agendamento agendamento) {
-		agendamento.setHoraAgendamento(LocalDateTime.now());
+		agendamento.setHoraAgendamento(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 		Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
 		AgendamentoDTO agendamentoDTO = new AgendamentoDTO();
 		ServicoDTO servico = modelMapper.map(agendamentoSalvo.getServico(), ServicoDTO.class);
@@ -144,7 +144,7 @@ public class AgendamentoService {
 		
 		Agendamento agendamento = new Agendamento();
 		agendamento.setDescricao(agendamentoRequestDto.getDescricao());
-		agendamento.setHoraAgendamento(LocalDateTime.now());
+		agendamento.setHoraAgendamento(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 		agendamento.setHoraInicial(agendamentoRequestDto.getHoraInicial());
 		agendamento.setHoraFinal(agendamentoRequestDto.getHoraFinal());
 		agendamento.setPessoa(pessoa);
