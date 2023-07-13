@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.gov.rj.teresopolis.prefeitura.domain.Agendamento;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoRequestDTO;
+import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoResponseDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.security.MessageResponseDTO;
 import br.gov.rj.teresopolis.prefeitura.services.AgendamentoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,7 +56,7 @@ public class AgendamentoController {
 	
 	@PostMapping("/inserir/dto")
 	@Operation(summary = "Cria um novo agendamento no banco recebendo um DTO", description = "Inserir agendamento no banco de dados passando todos os dados em apenas uma requisição")
-	public MessageResponseDTO cadastrarAgendamentoDTO(@RequestBody AgendamentoRequestDTO agendamentoRequestDto) {
+	public AgendamentoResponseDTO cadastrarAgendamentoDTO(@RequestBody AgendamentoRequestDTO agendamentoRequestDto) {
 		return agendamentoService.criarAgendamentoDto(agendamentoRequestDto);
 	}
 	

@@ -24,9 +24,9 @@ import br.gov.rj.teresopolis.prefeitura.domain.Pessoa;
 import br.gov.rj.teresopolis.prefeitura.domain.Servico;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoRequestDTO;
+import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoResponseDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.PessoaDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.ServicoDTO;
-import br.gov.rj.teresopolis.prefeitura.dto.security.MessageResponseDTO;
 import br.gov.rj.teresopolis.prefeitura.exceptions.NoSuchElementException;
 import br.gov.rj.teresopolis.prefeitura.repositories.AgendamentoRepository;
 import br.gov.rj.teresopolis.prefeitura.repositories.AnexoRepository;
@@ -129,7 +129,7 @@ public class AgendamentoService {
 	}
 
 	@Transactional
-	public MessageResponseDTO criarAgendamentoDto(AgendamentoRequestDTO agendamentoRequestDto) {
+	public AgendamentoResponseDTO criarAgendamentoDto(AgendamentoRequestDTO agendamentoRequestDto) {
 		
 		Pessoa pessoa = vericaPessoaEndereco(agendamentoRequestDto);
 		Servico servico = verificaServico(agendamentoRequestDto);
@@ -156,7 +156,34 @@ public class AgendamentoService {
 			anexoRepository.saveAll(anexosList);
 		}
 		
-		return new MessageResponseDTO("Agendamento salvo com sucesso!");
+		String formattedText;
+		if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 11) {
+		    // É um CPF
+		    formattedText = agendamentoSalvo.getPessoa().getCpfCnpj().replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+		} else if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 14) {
+		    // É um CNPJ
+		    formattedText = agendamentoSalvo.getPessoa().getCpfCnpj().replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
+		} else {
+		    // Caso contrário, não é um CPF nem CNPJ válido
+		    formattedText = agendamentoSalvo.getPessoa().getCpfCnpj();
+		}
+		
+		
+		DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter horaFormatada = DateTimeFormatter.ofPattern("HH:mm");
+		
+		String data = (agendamentoSalvo.getHoraInicial()).format(dataFormatada);
+		String hora = (agendamentoSalvo.getHoraInicial()).format(horaFormatada);
+		
+		
+		AgendamentoResponseDTO response = new AgendamentoResponseDTO();
+		
+		return new AgendamentoResponseDTO(agendamentoSalvo.getAgendamentoId(), 
+										  agendamentoSalvo.getServico().getNome(), 
+										  agendamentoSalvo.getPessoa().getNomeRazaoSocial(),
+										  formattedText,
+										  data,
+										  hora);
 	}
 	
 	
