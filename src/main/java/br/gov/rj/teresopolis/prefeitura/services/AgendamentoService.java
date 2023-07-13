@@ -1,5 +1,6 @@
 package br.gov.rj.teresopolis.prefeitura.services;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -16,6 +17,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Agendamento;
 import br.gov.rj.teresopolis.prefeitura.domain.Anexo;
@@ -129,7 +134,10 @@ public class AgendamentoService {
 	}
 
 	@Transactional
-	public AgendamentoResponseDTO criarAgendamentoDto(AgendamentoRequestDTO agendamentoRequestDto) {
+	public AgendamentoResponseDTO criarAgendamentoDto(String agendamentoString, List<Anexo> anexos) {
+		
+		AgendamentoRequestDTO agendamentoRequestDto = convertAgendamentoDTOFromStringJson(agendamentoString);
+		
 		
 		Pessoa pessoa = vericaPessoaEndereco(agendamentoRequestDto);
 		Servico servico = verificaServico(agendamentoRequestDto);
@@ -144,16 +152,15 @@ public class AgendamentoService {
 		
 		Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
 		
-		if(!(agendamentoRequestDto.getAnexos() == null)) {
-			List<Anexo> anexosList = agendamentoRequestDto.getAnexos()
+		if(!(anexos == null) || anexos.size() > 0) {
+			 anexos
 					.stream()
 					.map(anexo -> {
-						Anexo anexoModificado = modelMapper.map(anexo, Anexo.class);
-						anexoModificado.setAnexoId(agendamentoSalvo.getAgendamentoId());
-						return anexoModificado;
+					    anexo.setAgendamento(agendamentoSalvo);
+						return anexo;
 					})
 					.collect(Collectors.toList());
-			anexoRepository.saveAll(anexosList);
+			anexoRepository.saveAll(anexos);
 		}
 		
 		String formattedText;
@@ -249,4 +256,23 @@ public class AgendamentoService {
 			throw new NoSuchElementException("Erro ao verificar Serviço. Serviço não encontrado id="+ agendamentoRequestDto.getServicoId());
 		}
 	}
+	
+	private AgendamentoRequestDTO convertAgendamentoDTOFromStringJson(String agendamentoJson) {
+		AgendamentoRequestDTO agendamento = new AgendamentoRequestDTO();
+
+		try {
+			ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+					false);
+
+			objectMapper.registerModule(new JavaTimeModule());
+			agendamento = objectMapper.readValue(agendamentoJson, AgendamentoRequestDTO.class);
+		} catch (IOException err) {
+			System.out.printf("Ocorreu um erro ao tentar converter a string json para um instância de Agendamento",
+					err.toString());
+		}
+
+		return agendamento;
+	}
+	
+	
 }

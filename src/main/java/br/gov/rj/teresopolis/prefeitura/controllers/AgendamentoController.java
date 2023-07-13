@@ -1,9 +1,13 @@
 package br.gov.rj.teresopolis.prefeitura.controllers;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Agendamento;
+import br.gov.rj.teresopolis.prefeitura.domain.Anexo;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoRequestDTO;
 import br.gov.rj.teresopolis.prefeitura.dto.AgendamentoResponseDTO;
@@ -54,10 +61,34 @@ public class AgendamentoController {
 		return agendamentoService.criarAgendamento(agendamento);
 	}
 	
-	@PostMapping("/inserir/dto")
+	@PostMapping(path="/inserir/dto", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE,
+			MediaType.APPLICATION_JSON_VALUE })
 	@Operation(summary = "Cria um novo agendamento no banco recebendo um DTO", description = "Inserir agendamento no banco de dados passando todos os dados em apenas uma requisição")
-	public AgendamentoResponseDTO cadastrarAgendamentoDTO(@RequestBody AgendamentoRequestDTO agendamentoRequestDto) {
-		return agendamentoService.criarAgendamentoDto(agendamentoRequestDto);
+	public AgendamentoResponseDTO cadastrarAgendamentoDTO(@RequestPart("dados") String agendamentoRequestDto, 
+														  @RequestPart("files") Optional<MultipartFile[]> files ) {
+		List<Anexo> anexosList = new ArrayList<Anexo>();
+		
+		if(files.isPresent()) {
+			for (MultipartFile file : files.get()) {
+				String fileContentType = file.getContentType();
+				
+				byte[] sourceFileContent = null;
+				
+				try {
+					sourceFileContent = file.getBytes();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				String fileName = file.getOriginalFilename();
+				Anexo fileModal = new Anexo(sourceFileContent, fileContentType, fileName);
+				anexosList.add(fileModal);
+			}
+		}
+		
+		
+		
+		return agendamentoService.criarAgendamentoDto(agendamentoRequestDto, anexosList);
 	}
 	
 	
