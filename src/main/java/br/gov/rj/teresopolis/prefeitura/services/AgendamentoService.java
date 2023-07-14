@@ -206,43 +206,31 @@ public class AgendamentoService {
 	 */
 	private Pessoa vericaPessoaEndereco(AgendamentoRequestDTO agendamentoRequestDto) {
 		
-		Optional<Pessoa> pessoa = pessoaRepository.findPessoaByCpfCnpj(agendamentoRequestDto.getPessoaDto().getCpfCnpj());
-		Optional<Endereco> endereco;
-		
-		//Se a pessoa existe verifica se o endereço é o mesmo e se já está vinculado a ela
-		if (pessoa.isPresent()) {
-			Optional<Endereco> enderecoEncontrado = enderecoRepository.findByCep(agendamentoRequestDto.getEnderecoDto().getCep());
-		
-			if (enderecoEncontrado.isPresent() && !(enderecoEncontrado.get().getCep()).equals(agendamentoRequestDto.getEnderecoDto().getCep())) {
-				pessoa.get().setEndereco(enderecoEncontrado.get());
-				return pessoaRepository.save(pessoa.get());
-			}
-			//Se a pessoa existe, mas o endereço não. Salva o novo endereço e atualiza a pessoa.
-			else {
-				Endereco enderecoConvertido = modelMapper.map(agendamentoRequestDto.getEnderecoDto(), Endereco.class);
-				Endereco enderecoSalvo = enderecoRepository.save(enderecoConvertido);
-				pessoa.get().setEndereco(enderecoSalvo);
-				return pessoaRepository.save(pessoa.get());
-			}
-		}
-		//Se a pessoa não existe.
-		else {
-			Pessoa pessoaConvertida = modelMapper.map(agendamentoRequestDto.getPessoaDto(), Pessoa.class);
-			pessoaConvertida.setPreferencial(agendamentoRequestDto.getPessoaDto().isPreferencial());
-			endereco = enderecoRepository.findByCep(agendamentoRequestDto.getEnderecoDto().getCep());
-			
-			//Se a Pessoa e o endereço não existem
-			if (endereco.isEmpty()) {
-				Endereco enderecoConvertido = modelMapper.map(agendamentoRequestDto.getEnderecoDto(), Endereco.class);
-				enderecoRepository.save(enderecoConvertido);
-				pessoaConvertida.setEndereco(enderecoConvertido);
-			}
-			//Caso o endereço já exista
-			else {
-				pessoaConvertida.setEndereco(endereco.get());
-			}
-			return pessoaRepository.save(pessoaConvertida);
-		}
+		Pessoa pessoa = pessoaRepository.findPessoaByCpfCnpj(agendamentoRequestDto.getPessoaDto().getCpfCnpj());
+
+	    if (pessoa == null) {
+	        // Cria uma nova pessoa se não existir
+	        pessoa = modelMapper.map(agendamentoRequestDto.getPessoaDto(), Pessoa.class);
+	        pessoaRepository.save(pessoa);
+	    }
+
+	    Endereco endereco = pessoa.getEndereco();
+
+	    if (endereco == null || !endereco.equals(agendamentoRequestDto.getEnderecoDto())) {
+	        // O endereço fornecido é diferente do endereço atual ou o endereço não existe
+	        endereco = enderecoRepository.findByCep(agendamentoRequestDto.getEnderecoDto().getCep());
+
+	        if (endereco == null) {
+	            // Cria um novo endereço se não existir
+	            endereco = modelMapper.map(agendamentoRequestDto.getEnderecoDto(), Endereco.class);
+	            enderecoRepository.save(endereco);
+	        }
+
+	        pessoa.setEndereco(endereco);
+	        pessoaRepository.save(pessoa);
+	    }
+
+	    return pessoa;
 	}
 
 	/**

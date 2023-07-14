@@ -13,5 +13,5 @@ public interface EnderecoRepository extends JpaRepository<Endereco, UUID> {
 	
 	Optional<UUID>findIdByCep(String CEP);
 	
-	Optional<Endereco> findByCep(String CEP);
+	Endereco findByCep(String CEP);
 }

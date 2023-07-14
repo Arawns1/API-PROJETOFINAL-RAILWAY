@@ -13,5 +13,5 @@ public interface PessoaRepository extends JpaRepository<Pessoa, UUID> {
 
 	Optional<UUID> findByCpfCnpj(String cpfCnpj);
 
-	Optional<Pessoa> findPessoaByCpfCnpj(String cpfCnpj);
+	Pessoa findPessoaByCpfCnpj(String cpfCnpj);
 }

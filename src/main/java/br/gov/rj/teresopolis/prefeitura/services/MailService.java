@@ -91,13 +91,13 @@ public class MailService {
 				try {
 					message.setFrom(mailFrom);
 				} catch (MessagingException e) {
-					throw new EmailNotSentException("Erro ao definir remetente" + e.getMessage());
+					throw new EmailNotSentException("Erro ao definir remetente");
 				}
 				
 				try {
 					message.setSubject("Agendamento marcado com sucesso! - Prefeitura de Teresópolis");
 				} catch (MessagingException e) {
-					throw new EmailNotSentException("Erro ao definir Assunto do Email" + e.getMessage());
+					throw new EmailNotSentException("Erro ao definir Assunto do Email");
 				}
 
 				Optional<Servico> servico = servicoRepository.findById(agendamento.getServico().getServicoId());
@@ -116,7 +116,7 @@ public class MailService {
 					destinatarios[0] = new InternetAddress(agendamento.getPessoa().getEmail());
 					message.setRecipients(Message.RecipientType.TO, destinatarios);
 				} catch (Exception e) {
-					throw new EmailNotSentException("Erro ao definir email do destinatario" + e.getMessage());
+					throw new EmailNotSentException("Erro ao definir email do destinatario");
 				}
 				
 			
@@ -129,7 +129,7 @@ public class MailService {
 					// Adicionar o conteúdo ao e-mail
 					message.setContent(multipart);
 				} catch (MessagingException e) {
-					throw new EmailNotSentException("Erro ao gerar conteudo do email " + e.getMessage());
+					throw new EmailNotSentException("Erro ao gerar conteudo do email ");
 				}
 				
 				
@@ -142,13 +142,13 @@ public class MailService {
 				try {
 					message.setFrom(mailFrom);
 				} catch (MessagingException e) {
-					throw new EmailNotSentException("Erro ao definir remetente" + e.getMessage());
+					throw new EmailNotSentException("Erro ao definir remetente" );
 				}
 				
 				try {
 					message.setSubject("Novo Agendamento! - Prefeitura de Teresópolis");
 				} catch (MessagingException e) {
-					throw new EmailNotSentException("Erro ao definir Assunto do Email" + e.getMessage());
+					throw new EmailNotSentException("Erro ao definir Assunto do Email" );
 				}
 
 				Optional<Servico> servico = servicoRepository.findById(agendamento.getServico().getServicoId());
@@ -167,7 +167,7 @@ public class MailService {
 					destinatarios[0] = new InternetAddress(agendamento.getServico().getOrgao().getEmail());
 					message.setRecipients(Message.RecipientType.TO, destinatarios);
 				} catch (Exception e) {
-					throw new EmailNotSentException("Erro ao definir email do destinatario" + e.getMessage());
+					throw new EmailNotSentException("Erro ao definir email do destinatario");
 				}
 				
 				try {
@@ -179,7 +179,7 @@ public class MailService {
 					// Adicionar o conteúdo ao e-mail
 					message.setContent(multipart);
 				} catch (MessagingException e) {
-					throw new EmailNotSentException("Erro ao gerar conteudo do email " + e.getMessage());
+					throw new EmailNotSentException("Erro ao gerar conteudo do email ");
 				}
 				
 				return message;
