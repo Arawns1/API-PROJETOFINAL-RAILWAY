@@ -12,9 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import br.gov.rj.teresopolis.prefeitura.utils.PessoaFisica;
-import br.gov.rj.teresopolis.prefeitura.utils.PessoaGroupSequenceProvider;
-import br.gov.rj.teresopolis.prefeitura.utils.PessoaJuridica;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +24,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -36,7 +34,6 @@ import jakarta.validation.constraints.Size;
 		property = "pessoaId",
 		scope = Pessoa.class
 	)
-@GroupSequenceProvider(value = PessoaGroupSequenceProvider.class)
 public class Pessoa {
 	@Id
     @GeneratedValue(strategy=GenerationType.UUID)
@@ -55,7 +52,7 @@ public class Pessoa {
     private String nomeRazaoSocial;
     
 	@NotNull(message ="A data de registro não pode ser nula")
-	@Past(message="A data de registro não pode estar no presente ou futuro")
+	@PastOrPresent(message="A data de registro não pode estar no presente ou futuro")
 	@Column(name= "pes_dt_data_registro")
     private LocalDate dataRegistro;
     

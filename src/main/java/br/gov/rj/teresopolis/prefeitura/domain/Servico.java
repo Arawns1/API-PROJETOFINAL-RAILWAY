@@ -37,8 +37,10 @@ public class Servico {
     private String nome;
     
     @Column(name = "serv_tx_tipo_servico")
-   
     private String tipoServico;
+    
+    @Column(name = "serv_bool_status")
+    private boolean status;
     
     @ManyToOne
     @JoinColumn(name = "fk_orgao_id", referencedColumnName = "org_cd_id")
@@ -99,6 +101,14 @@ public class Servico {
 
 	public void setImagem(Imagem imagem) {
 		this.imagem = imagem;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	@Override

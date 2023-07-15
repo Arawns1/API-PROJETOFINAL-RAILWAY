@@ -7,7 +7,7 @@ public class ServicoDTO {
 	private String nome;
 	private String tipoServico;
 	private ImagemDTO imagemDTO;
-
+	private boolean status;
 
 	public UUID getServicoId() {
 		return servicoId;
@@ -41,4 +41,11 @@ public class ServicoDTO {
 		this.imagemDTO = imagemDTO;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 }

@@ -2,6 +2,8 @@ package br.gov.rj.teresopolis.prefeitura.services;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -16,6 +18,7 @@ import br.gov.rj.teresopolis.prefeitura.domain.Servico;
 import br.gov.rj.teresopolis.prefeitura.exceptions.EmailNotSentException;
 import br.gov.rj.teresopolis.prefeitura.repositories.PessoaRepository;
 import br.gov.rj.teresopolis.prefeitura.repositories.ServicoRepository;
+import jakarta.mail.Address;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -23,10 +26,12 @@ import jakarta.mail.Multipart;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
+import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import jakarta.transaction.Transactional;
 
 @Service
 public class MailService {
@@ -59,6 +64,7 @@ public class MailService {
 		this.emailSender = javaMailSender;
 	}
 
+	@Transactional
 	public void enviarCalendario(Agendamento agendamento) throws MessagingException {
 
 		Properties props = new Properties();
@@ -74,33 +80,111 @@ public class MailService {
 			}
 		});
 
-		MimeMessage message = new MimeMessage(session);
-		message.setFrom(mailFrom);
-		message.setSubject("Agendamento marcado com sucesso! - Prefeitura de Teresópolis");
-
-		Optional<Servico> servico = servicoRepository.findById(agendamento.getServico().getServicoId());
-		Optional<Pessoa> pessoa = pessoaRepository.findById(agendamento.getPessoa().getPessoaId());
-
-		if (servico.isPresent() && pessoa.isPresent()) {
-			agendamento.setServico(servico.get());
-			agendamento.setPessoa(pessoa.get());
-		} else {
-			throw new EmailNotSentException("Não foi possível encontrar o destinatário do email");
-		}
-
-		message.setRecipient(Message.RecipientType.TO, new InternetAddress(agendamento.getPessoa().getEmail()));
-
-		// Criar o conteúdo do e-mail
-		Multipart multipart = new MimeMultipart();
-		multipart.addBodyPart(gerarEmailMessage(agendamento));
-		multipart.addBodyPart(gerarIcs(agendamento));
-
-		// Adicionar o conteúdo ao e-mail
-		message.setContent(multipart);
-
-		Transport.send(message);
+		Transport.send(corpoEmailPessoa(agendamento, session));
+		Transport.send(corpoEmailOrgao(agendamento, session));
+		
 	}
 
+	private MimeMessage corpoEmailPessoa(Agendamento agendamento, Session session) {
+		//Mensagem Pessoa
+				MimeMessage message = new MimeMessage(session);
+				try {
+					message.setFrom(mailFrom);
+				} catch (MessagingException e) {
+					throw new EmailNotSentException("Erro ao definir remetente" + e.getMessage());
+				}
+				
+				try {
+					message.setSubject("Agendamento marcado com sucesso! - Prefeitura de Teresópolis");
+				} catch (MessagingException e) {
+					throw new EmailNotSentException("Erro ao definir Assunto do Email" + e.getMessage());
+				}
+
+				Optional<Servico> servico = servicoRepository.findById(agendamento.getServico().getServicoId());
+				Optional<Pessoa> pessoa = pessoaRepository.findById(agendamento.getPessoa().getPessoaId());
+
+				if (servico.isPresent() && pessoa.isPresent()) {
+					agendamento.setServico(servico.get());
+					agendamento.setPessoa(pessoa.get());
+				} else {
+					throw new EmailNotSentException("Não foi possível encontrar o destinatário do email");
+				}
+				
+				Address[] destinatarios = new Address[1];
+				
+				try {
+					destinatarios[0] = new InternetAddress(agendamento.getPessoa().getEmail());
+					message.setRecipients(Message.RecipientType.TO, destinatarios);
+				} catch (Exception e) {
+					throw new EmailNotSentException("Erro ao definir email do destinatario" + e.getMessage());
+				}
+				
+			
+				try {
+					// Criar o conteúdo do e-mail
+					Multipart multipart = new MimeMultipart();
+					multipart.addBodyPart(gerarEmailMessage(agendamento));
+					multipart.addBodyPart(gerarIcs(agendamento));
+					
+					// Adicionar o conteúdo ao e-mail
+					message.setContent(multipart);
+				} catch (MessagingException e) {
+					throw new EmailNotSentException("Erro ao gerar conteudo do email " + e.getMessage());
+				}
+				
+				
+				return message;
+	}
+	
+	private MimeMessage corpoEmailOrgao(Agendamento agendamento, Session session) {
+		//Mensagem Orgão
+				MimeMessage message = new MimeMessage(session);
+				try {
+					message.setFrom(mailFrom);
+				} catch (MessagingException e) {
+					throw new EmailNotSentException("Erro ao definir remetente" + e.getMessage());
+				}
+				
+				try {
+					message.setSubject("Novo Agendamento! - Prefeitura de Teresópolis");
+				} catch (MessagingException e) {
+					throw new EmailNotSentException("Erro ao definir Assunto do Email" + e.getMessage());
+				}
+
+				Optional<Servico> servico = servicoRepository.findById(agendamento.getServico().getServicoId());
+				Optional<Pessoa> pessoa = pessoaRepository.findById(agendamento.getPessoa().getPessoaId());
+
+				if (servico.isPresent() && pessoa.isPresent()) {
+					agendamento.setServico(servico.get());
+					agendamento.setPessoa(pessoa.get());
+				} else {
+					throw new EmailNotSentException("Não foi possível encontrar o destinatário do email");
+				}
+				
+				Address[] destinatarios = new Address[1];
+				
+				try {
+					destinatarios[0] = new InternetAddress(agendamento.getServico().getOrgao().getEmail());
+					message.setRecipients(Message.RecipientType.TO, destinatarios);
+				} catch (Exception e) {
+					throw new EmailNotSentException("Erro ao definir email do destinatario" + e.getMessage());
+				}
+				
+				try {
+					// Criar o conteúdo do e-mail
+					Multipart multipart = new MimeMultipart();
+					multipart.addBodyPart(gerarEmailMessageOrgao(agendamento));
+					multipart.addBodyPart(gerarIcs(agendamento));
+					
+					// Adicionar o conteúdo ao e-mail
+					message.setContent(multipart);
+				} catch (MessagingException e) {
+					throw new EmailNotSentException("Erro ao gerar conteudo do email " + e.getMessage());
+				}
+				
+				return message;
+	}
+	
 	private MimeBodyPart gerarIcs(Agendamento agendamento) {
 		// Formatar as datas e horas no formato iCalendar
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
@@ -175,6 +259,42 @@ public class MailService {
 		emailMessage += "Serviço escolhido: " + agendamento.getServico().getNome() + "\r\n";
 		emailMessage += "<br>\r\n";
 		emailMessage += "Não esqueça de levar seus documentos!\r\n";
+		emailMessage += "</body>\r\n";
+		emailMessage += "</html>\r\n";
+
+		MimeBodyPart textPart = new MimeBodyPart();
+		try {
+			textPart.setContent(emailMessage, "text/html");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
+		return textPart;
+	}
+
+	private MimeBodyPart gerarEmailMessageOrgao(Agendamento agendamento) {
+		String emailMessage;
+
+		emailMessage = "<html>\r\n";
+		emailMessage += "<body>\r\n";
+		emailMessage += "<img src='https://media.discordapp.net/attachments/929069726372597815/1126557179424547007/Brasao-horizontal-azul.png?width=500&height=100'>\r\n";
+		emailMessage += "<h1> Novo Agendamento!</h1>\r\n";
+		emailMessage += "ID do agendamento: " + agendamento.getAgendamentoId() + "\r\n";
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm");
+
+		LocalDateTime dataHoraInicial = agendamento.getHoraInicial();
+		LocalDateTime dataHoraFinal = agendamento.getHoraFinal();
+
+		String formattedDataHoraInicial = dataHoraInicial.format(formatter);
+		String formattedDataHoraFinal = dataHoraFinal.format(formatter);
+		emailMessage += "<br>\r\n";
+		emailMessage += "Agendado para: " + agendamento.getPessoa().getNomeRazaoSocial() + "\r\n";
+		emailMessage += "<br>\r\n";
+		emailMessage += "Horário do agendamento: " + formattedDataHoraInicial + " - " + formattedDataHoraFinal + "\r\n";
+		emailMessage += "<br>\r\n";
+		emailMessage += "Serviço escolhido: " + agendamento.getServico().getNome() + "\r\n";
+		emailMessage += "<br>\r\n";
 		emailMessage += "</body>\r\n";
 		emailMessage += "</html>\r\n";
 

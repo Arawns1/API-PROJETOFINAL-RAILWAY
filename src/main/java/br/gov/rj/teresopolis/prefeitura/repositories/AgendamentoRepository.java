@@ -14,6 +14,6 @@ import br.gov.rj.teresopolis.prefeitura.domain.Agendamento;
 public interface AgendamentoRepository extends JpaRepository<Agendamento, UUID> {
 	  
 	@Query("FROM Agendamento ag where ag.horaFinal >= :dataInicial and ag.horaFinal <= :dataFinal") 
-	  List<Agendamento> obterAgendamentoPorDia(LocalDateTime dataInicial, LocalDateTime dataFinal);
-	 
+	List<Agendamento> obterAgendamentoPorDia(LocalDateTime dataInicial, LocalDateTime dataFinal);
+
 }

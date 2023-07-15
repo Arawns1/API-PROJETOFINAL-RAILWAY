@@ -104,7 +104,6 @@ public class AgendamentoService {
 		agendamento.setHoraAgendamento(LocalDateTime.now());
 		Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
 		try {
-			System.out.println("Agendamento" + agendamentoSalvo);
 			mailService.enviarCalendario(agendamentoSalvo);
 		} catch (MessagingException e) {
 			e.printStackTrace();
@@ -138,7 +137,6 @@ public class AgendamentoService {
 		
 		AgendamentoRequestDTO agendamentoRequestDto = convertAgendamentoDTOFromStringJson(agendamentoString);
 		
-		
 		Pessoa pessoa = vericaPessoaEndereco(agendamentoRequestDto);
 		Servico servico = verificaServico(agendamentoRequestDto);
 		
@@ -151,6 +149,13 @@ public class AgendamentoService {
 		agendamento.setServico(servico);
 		
 		Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
+		
+		//Envia os emails
+		try {
+			mailService.enviarCalendario(agendamentoSalvo);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 		
 		if(!(anexos == null) || anexos.size() > 0) {
 			 anexos
@@ -181,7 +186,6 @@ public class AgendamentoService {
 		
 		String data = (agendamentoSalvo.getHoraInicial()).format(dataFormatada);
 		String hora = (agendamentoSalvo.getHoraInicial()).format(horaFormatada);
-		
 		
 		AgendamentoResponseDTO response = new AgendamentoResponseDTO();
 		

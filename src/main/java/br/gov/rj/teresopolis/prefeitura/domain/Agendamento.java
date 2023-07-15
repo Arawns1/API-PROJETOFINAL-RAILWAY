@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -55,7 +56,7 @@ public class Agendamento {
     @JoinColumn(name = "fk_servico_id", referencedColumnName = "serv_cd_id")
     private Servico servico;
     
-	@OneToMany(mappedBy="agendamento", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="agendamento", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Anexo> anexos;
 
 	public UUID getAgendamentoId() {

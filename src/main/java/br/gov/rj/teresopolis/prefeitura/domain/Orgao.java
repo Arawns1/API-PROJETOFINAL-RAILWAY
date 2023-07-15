@@ -35,6 +35,10 @@ public class Orgao {
 	@Column(name= "org_tx_nome")
     private String nome;
 	
+	@NotBlank(message="O email não pode ser nulo")
+	@Column(name= "org_tx_email")
+    private String email;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="orgao")
 	private List<User> usuarios;
@@ -74,5 +78,12 @@ public class Orgao {
 	public void setServicos(List<Servico> servicos) {
 		this.servicos = servicos;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }
