@@ -61,15 +61,18 @@ public class AgendamentoService {
 	MailService mailService;
 
 	ModelMapper modelMapper = new ModelMapper();
-
+	
+	
 	public AgendamentoService(AgendamentoRepository agendamentoRepository) {
 		this.agendamentoRepository = agendamentoRepository;
 	}
-
+	
+	@Transactional
 	public List<Agendamento> listarAgendamentos() {
 		return agendamentoRepository.findAll();
 	}
-
+	
+	@Transactional
 	public Agendamento obterAgendamentoPorId(UUID id) {
 		Agendamento agendamento = agendamentoRepository.findById(id)
 				.orElseThrow(() -> new NoSuchElementException("Não foi encontrado o agendamento de id= " + id));

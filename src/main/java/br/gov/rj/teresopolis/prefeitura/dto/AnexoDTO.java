@@ -9,6 +9,10 @@ public class AnexoDTO {
 	private String nome;
 	private UUID agendamentoId;
 	
+	
+	public AnexoDTO() {
+		super();
+	}
 	public AnexoDTO(UUID anexoId, byte[] dados, String tipo, String nome, UUID agendamentoId) {
 		super();
 		this.anexoId = anexoId;
