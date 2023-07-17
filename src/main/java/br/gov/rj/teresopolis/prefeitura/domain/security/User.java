@@ -1,13 +1,16 @@
 package br.gov.rj.teresopolis.prefeitura.domain.security;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import br.gov.rj.teresopolis.prefeitura.domain.Orgao;
+import br.gov.rj.teresopolis.prefeitura.domain.Servico;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +30,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "Usuario")
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "usuarioId", scope = User.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
 
 public class User {
 	@Id
@@ -49,14 +53,14 @@ public class User {
 	@Column(name = "usu_tx_senha")
 	private String password;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	@ManyToOne
-	@JoinColumn(name="fk_orgao_id",referencedColumnName="org_cd_id" )
-    private Orgao orgao;
-
+	@JsonIgnore
+	@OneToMany(mappedBy="usuario")
+	private List<Servico> servicos;
+	
 	public User() {
 	}
 
@@ -66,7 +70,6 @@ public class User {
 		this.password = password;
 	}
 
-	
 	public UUID getId() {
 		return id;
 	}
@@ -74,19 +77,6 @@ public class User {
 	public void setId(UUID id) {
 		this.id = id;
 	}
-
-	public User( String username,
-			 String email,
-			 String password,
-			Orgao orgao) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.orgao = orgao;
-	}
-
-
 	public String getUsername() {
 		return username;
 	}
@@ -119,14 +109,12 @@ public class User {
 		this.roles = roles;
 	}
 
-	public Orgao getOrgao() {
-		return orgao;
+	public List<Servico> getServicos() {
+		return servicos;
 	}
 
-	public void setOrgao(Orgao orgao) {
-		this.orgao = orgao;
+	public void setServicos(List<Servico> servicos) {
+		this.servicos = servicos;
 	}
-	
-	
 
 }

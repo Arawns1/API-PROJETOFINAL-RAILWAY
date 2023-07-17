@@ -46,9 +46,6 @@ public class UserService {
 					.collect(Collectors.toSet());
 
 			userDto.setRoles(rolesString);
-
-			OrgaoDTO orgaoDto = modelMapper.map(user.getOrgao(), OrgaoDTO.class);
-			userDto.setOrgao(orgaoDto);
 			usersDTO.add(userDto);
 		}
 		return usersDTO;
@@ -66,10 +63,9 @@ public class UserService {
 
 		Set<String> rolesString = user.getRoles().stream().map(role -> role.getName().name())
 				.collect(Collectors.toSet());
+		
 		userDto.setRoles(rolesString);
-		OrgaoDTO orgaoDto = modelMapper.map(user.getOrgao(), OrgaoDTO.class);
-		userDto.setOrgao(orgaoDto);
-
+		
 		return userDto;
 	}
 

@@ -63,11 +63,6 @@ public class JwtUtils {
 		userMap.put("name", userDto.getUsername());
 		userMap.put("email", userDto.getEmail());
 		
-		 Map<String, Object> orgaoMap = new HashMap<>();
-		 orgaoMap.put("nome", user.getOrgao().getNome());
-		 orgaoMap.put("id", user.getOrgao().getOrgaoId());
-		 userMap.put("orgao", orgaoMap);
-		 
 		 Map<String, Object> rolesMap = new HashMap<>();
 		 
 		 int[] index = { 0}; 

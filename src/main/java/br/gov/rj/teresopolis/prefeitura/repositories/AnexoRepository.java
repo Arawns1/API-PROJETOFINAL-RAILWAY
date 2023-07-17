@@ -14,6 +14,6 @@ import br.gov.rj.teresopolis.prefeitura.dto.AnexoDTO;
 public interface AnexoRepository extends JpaRepository<Anexo, UUID> {
 
 	@Query("FROM Anexo a where a.agendamento.agendamentoId = :idAgendamento")
-	List<Anexo> findAnexosByAgendamento(UUID id);
+	List<Anexo> findAnexosByAgendamento(UUID idAgendamento);
 
 }

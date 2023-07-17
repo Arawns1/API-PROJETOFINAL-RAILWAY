@@ -149,14 +149,6 @@ public class AgendamentoService {
 		agendamento.setServico(servico);
 		
 		Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
-		
-		//Envia os emails
-		try {
-			mailService.enviarCalendario(agendamentoSalvo);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-		
 		if(!(anexos == null) || anexos.size() > 0) {
 			 anexos
 					.stream()
@@ -167,6 +159,15 @@ public class AgendamentoService {
 					.collect(Collectors.toList());
 			anexoRepository.saveAll(anexos);
 		}
+		
+		
+		//Envia os emails
+		try {
+			mailService.enviarCalendario(agendamentoSalvo);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
 		
 		String formattedText;
 		if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 11) {

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import br.gov.rj.teresopolis.prefeitura.domain.security.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,39 +22,38 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "servico")
-@JsonIdentityInfo(
-		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "servicoId",
-		scope = Servico.class
-	)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "servicoId", scope = Servico.class)
 public class Servico {
-	
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.UUID)
-	@Column(name= "serv_cd_id")
-    private UUID servicoId;
-	
-    @Column(name= "serv_tx_nome")
-    private String nome;
-    
-    @Column(name = "serv_tx_tipo_servico")
-    private String tipoServico;
-    
-    @Column(name = "serv_bool_status")
-    private boolean status;
-    
-    @ManyToOne
-    @JoinColumn(name = "fk_orgao_id", referencedColumnName = "org_cd_id")
-    private Orgao orgao;
-    
-    @JsonIgnore
-	@OneToMany(mappedBy="servico")
+	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "serv_cd_id")
+	private UUID servicoId;
+
+	@Column(name = "serv_tx_nome")
+	private String nome;
+
+	@Column(name = "serv_tx_tipo_servico")
+	private String tipoServico;
+
+	@Column(name = "serv_bool_status")
+	private boolean status;
+
+	@ManyToOne
+	@JoinColumn(name = "fk_orgao_id", referencedColumnName = "org_cd_id")
+	private Orgao orgao;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "servico")
 	private List<Agendamento> agendamentos;
-    
-    @OneToOne(cascade=CascadeType.REMOVE)
-    @JoinColumn(name = "fk_imagem_id", referencedColumnName = "img_cd_id")
-    private Imagem imagem;
-    
+
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "fk_imagem_id", referencedColumnName = "img_cd_id")
+	private Imagem imagem;
+
+	@ManyToOne
+	@JoinColumn(name = "fk_usuario_id", referencedColumnName = "usu_cd_id")
+	private User usuario;
 
 	public UUID getServicoId() {
 		return servicoId;
@@ -69,6 +69,22 @@ public class Servico {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getTipoServico() {
+		return tipoServico;
+	}
+
+	public void setTipoServico(String tipoServico) {
+		this.tipoServico = tipoServico;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public Orgao getOrgao() {
@@ -87,14 +103,6 @@ public class Servico {
 		this.agendamentos = agendamentos;
 	}
 
-	public String getTipoServico() {
-		return tipoServico;
-	}
-
-	public void setTipoServico(String tipoServico) {
-		this.tipoServico = tipoServico;
-	}
-
 	public Imagem getImagem() {
 		return imagem;
 	}
@@ -103,12 +111,12 @@ public class Servico {
 		this.imagem = imagem;
 	}
 
-	public boolean isStatus() {
-		return status;
+	public User getUsuario() {
+		return usuario;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setUsuario(User usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
@@ -116,5 +124,5 @@ public class Servico {
 		return "Servico [servicoId=" + servicoId + ", nome=" + nome + ", tipoServico=" + tipoServico + ", orgao="
 				+ orgao + "]";
 	}
-	
+
 }

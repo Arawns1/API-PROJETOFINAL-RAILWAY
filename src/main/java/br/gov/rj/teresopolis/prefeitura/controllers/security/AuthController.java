@@ -81,10 +81,9 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(new MessageResponseDTO("Erro: Email já utilizado!"));
 		}
 
-		Orgao orgao = modelMapper.map(signUpRequest.getOrgao(), Orgao.class);
 		// Cria a nova conta de usuario
 		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-				encoder.encode(signUpRequest.getPassword()), orgao);
+				encoder.encode(signUpRequest.getPassword()));
 		
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();

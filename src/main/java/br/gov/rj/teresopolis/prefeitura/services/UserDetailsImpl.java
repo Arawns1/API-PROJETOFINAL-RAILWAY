@@ -24,39 +24,31 @@ public class UserDetailsImpl implements UserDetails {
 	private String username;
 
 	private String email;
-	
-	private OrgaoDTO orgao;
 
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(UUID id, String username, String email, OrgaoDTO orgao, String password,
+	public UserDetailsImpl(UUID id, String username, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.orgao = orgao;
 		this.authorities = authorities;
 	}
 	
-	
-
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
-		ModelMapper modelMapper = new ModelMapper();
-		OrgaoDTO orgaoDTO = modelMapper.map(user.getOrgao(), OrgaoDTO.class);
-		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(),orgaoDTO, user.getPassword(), authorities);
+		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
-
 
 	public UUID getId() {
 		return id;
@@ -66,10 +58,6 @@ public class UserDetailsImpl implements UserDetails {
 		return email;
 	}
 	
-	public OrgaoDTO getOrgao() {
-		return orgao;
-	}
-
 	@Override
 	public String getPassword() {
 		return password;

@@ -2,7 +2,6 @@ package br.gov.rj.teresopolis.prefeitura.dto.security;
 
 import java.util.Set;
 
-import br.gov.rj.teresopolis.prefeitura.dto.OrgaoDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -19,8 +18,6 @@ public class SignupRequestDTO {
 
 	private Set<String> role;
 	
-	private OrgaoDTO orgao;
-
 	@NotBlank
 	@Size(min = 8, max = 120)
 	private String password;
@@ -56,12 +53,5 @@ public class SignupRequestDTO {
 	public void setRole(Set<String> role) {
 		this.role = role;
 	}
-
-	public OrgaoDTO getOrgao() {
-		return orgao;
-	}
-
-	public void setOrgao(OrgaoDTO orgao) {
-		this.orgao = orgao;
-	}
+	
 }

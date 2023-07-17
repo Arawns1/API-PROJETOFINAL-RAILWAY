@@ -24,6 +24,7 @@ import br.gov.rj.teresopolis.prefeitura.exceptions.InvalidServiceException;
 import br.gov.rj.teresopolis.prefeitura.exceptions.NoSuchElementException;
 import br.gov.rj.teresopolis.prefeitura.repositories.ImagemRepository;
 import br.gov.rj.teresopolis.prefeitura.repositories.ServicoRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ServicoService {
@@ -38,7 +39,8 @@ public class ServicoService {
 	public ServicoService(ServicoRepository servicoRepository) {
 		this.servicoRepository = servicoRepository;
 	}
-
+	
+	@Transactional
 	public List<ServicoDTO> listarServicos() {
 		List<ServicoDTO> servicosDTO = new ArrayList<>();
 		for (Servico servico : servicoRepository.findAll()) {
@@ -83,6 +85,7 @@ public class ServicoService {
 		}
 		String nomeImagem = file.getOriginalFilename();
 		Imagem imagem = new Imagem(dados, tipoImagem, nomeImagem);
+		
 		Servico servico = convertServicoFromStringJson(servicoJson);
 		
 		boolean tipoServicoValido = false;

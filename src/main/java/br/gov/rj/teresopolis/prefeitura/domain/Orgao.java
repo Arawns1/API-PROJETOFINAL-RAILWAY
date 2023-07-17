@@ -41,10 +41,6 @@ public class Orgao {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="orgao")
-	private List<User> usuarios;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy="orgao")
 	private List<Servico> servicos;
 
 	public UUID getOrgaoId() {
@@ -63,12 +59,12 @@ public class Orgao {
 		this.nome = nome;
 	}
 
-	public List<User> getUsuarios() {
-		return usuarios;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsuarios(List<User> usuarios) {
-		this.usuarios = usuarios;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public List<Servico> getServicos() {
@@ -79,11 +75,4 @@ public class Orgao {
 		this.servicos = servicos;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 }
