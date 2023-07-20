@@ -22,7 +22,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "servico")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "servicoId", scope = Servico.class)
+/*
+ * @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+ * property = "servicoId", scope = Servico.class)
+ */
 public class Servico {
 
 	@Id

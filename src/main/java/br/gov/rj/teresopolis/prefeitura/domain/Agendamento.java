@@ -22,11 +22,10 @@ import jakarta.validation.constraints.FutureOrPresent;
 
 @Entity
 @Table(name = "agendamento")
-@JsonIdentityInfo(
-		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "agendamentoId",
-		scope = Agendamento.class
-	)
+/*
+ * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
+ * property = "agendamentoId", scope = Agendamento.class )
+ */
 public class Agendamento {
 	
 	@Id

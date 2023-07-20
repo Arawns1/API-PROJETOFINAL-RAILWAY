@@ -54,6 +54,25 @@ public class AgendamentoController {
 	public List<Agendamento> findId(@PathVariable("dia") String dia) {
 		return agendamentoService.obterAgendamentoPorDia(dia);
 	}
+	
+	@GetMapping("/count/semana/{diaSemana}")
+	@Operation(summary = "Encontra todos os agendamentos na semana escolhida", description = "Encontra todos os agendamentos na semana escolhida")
+	public Long obterNumeroDeAgendamentosNaSemana(@PathVariable("diaSemana") String diaSemana){
+		return agendamentoService.obterNumeroDeAgendamentosNaSemana(diaSemana);
+	}
+	
+	@GetMapping("/count/mes/{diaMes}")
+	@Operation(summary = "Encontra todos os agendamentos no mes escolhida", description = "Encontra todos os agendamentos no mes escolhida")
+	public Long obterNumeroDeAgendamentosNoMes(@PathVariable("diaMes") String diaMes){
+		return agendamentoService.obterNumeroDeAgendamentosNoMes(diaMes);
+	}
+	
+	@GetMapping("/count/ano/{diaAno}")
+	@Operation(summary = "Encontra todos os agendamentos no ano escolhida", description = "Encontra todos os agendamentos na ano escolhida")
+	public Long obterNumeroDeAgendamentosNoAno(@PathVariable("diaAno") String diaAno){
+		return agendamentoService.obterNumeroDeAgendamentosNoAno(diaAno);
+	}
+			
 
 	@PostMapping("/inserir")
 	@Operation(summary = "Inserir agendamento no banco de dados", description = "Inserir os agendamentos no banco de dados")

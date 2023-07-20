@@ -1,5 +1,6 @@
 package br.gov.rj.teresopolis.prefeitura.repositories;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -15,5 +16,8 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, UUID> 
 	  
 	@Query("FROM Agendamento ag where ag.horaFinal >= :dataInicial and ag.horaFinal <= :dataFinal") 
 	List<Agendamento> obterAgendamentoPorDia(LocalDateTime dataInicial, LocalDateTime dataFinal);
+	
+	@Query("SELECT COUNT(ag) FROM Agendamento ag where ag.horaInicial >= :dataInicial and ag.horaFinal <= :dataFinal") 
+	Long getNumAgendamentos(LocalDateTime dataInicial, LocalDateTime dataFinal);
 
 }

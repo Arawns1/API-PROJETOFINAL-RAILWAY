@@ -29,11 +29,10 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "pessoa")
-@JsonIdentityInfo(
-		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "pessoaId",
-		scope = Pessoa.class
-	)
+/*
+ * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
+ * property = "pessoaId", scope = Pessoa.class )
+ */
 public class Pessoa {
 	@Id
     @GeneratedValue(strategy=GenerationType.UUID)
