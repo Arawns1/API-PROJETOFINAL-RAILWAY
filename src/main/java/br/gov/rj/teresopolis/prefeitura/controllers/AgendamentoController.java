@@ -3,6 +3,7 @@ package br.gov.rj.teresopolis.prefeitura.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -72,7 +73,11 @@ public class AgendamentoController {
 	public Long obterNumeroDeAgendamentosNoAno(@PathVariable("diaAno") String diaAno){
 		return agendamentoService.obterNumeroDeAgendamentosNoAno(diaAno);
 	}
-			
+	
+	@GetMapping("/count/ano/meses/{anoInicial}")
+	public Map<String, Long> obterNumeroDeAgendamentosPorAno(@PathVariable("anoInicial") String anoInicial){
+		return agendamentoService.obterNumeroDeAgendamentosPorAno(anoInicial, anoInicial);
+	}
 
 	@PostMapping("/inserir")
 	@Operation(summary = "Inserir agendamento no banco de dados", description = "Inserir os agendamentos no banco de dados")

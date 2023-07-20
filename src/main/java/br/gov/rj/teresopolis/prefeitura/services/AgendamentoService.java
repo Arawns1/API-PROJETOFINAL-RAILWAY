@@ -7,11 +7,16 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -175,8 +180,8 @@ public class AgendamentoService {
 		}
 	}
 	
-	
 	public Long obterNumeroDeAgendamentosNoAno(String StringData) {
+
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			DateTimeFormatter LocalDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -196,8 +201,39 @@ public class AgendamentoService {
 		}
 	}
 	
-	
 
+	
+	public Map<String, Long> obterNumeroDeAgendamentosPorAno(String anoInicialString, String anoFinalString) {
+	    Map<String, Long> agendamentosPorMes = new LinkedHashMap<>();
+
+	    int anoInicial = Integer.parseInt(anoInicialString);
+	    int anoFinal = Integer.parseInt(anoFinalString);
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	    for (int ano = anoInicial; ano <= anoFinal; ano++) {
+	        for (Month mes : Month.values()) {
+	            Date data = null;
+	            try {
+	                data = sdf.parse(ano + "-" + String.format("%02d", mes.getValue()) + "-01");
+	            } catch (java.text.ParseException e) {
+	                e.printStackTrace();
+	            }
+
+	            LocalDate dataLocal = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	            LocalDateTime dataInicioMes = dataLocal.atStartOfDay();
+	            LocalDate ultimoDiaMes = dataLocal.withDayOfMonth(dataLocal.lengthOfMonth());
+	            LocalDateTime dataFimMesComHorario = ultimoDiaMes.atTime(23, 59, 59);
+
+	            long numeroAgendamentos = agendamentoRepository.getNumAgendamentos(dataInicioMes, dataFimMesComHorario);
+
+	            agendamentosPorMes.put(mes.getDisplayName(TextStyle.FULL_STANDALONE, new Locale("pt", "BR")).toLowerCase(), numeroAgendamentos);
+	        }
+	    }
+
+	    return agendamentosPorMes;
+	}
+	
 	@Transactional
 	public AgendamentoResponseDTO criarAgendamentoDto(String agendamentoString, List<Anexo> anexos) {
 
