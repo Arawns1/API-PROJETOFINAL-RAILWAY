@@ -36,7 +36,7 @@ public class Agendamento {
 	@Column(name="age_tx_descricao")
     private String descricao;
     
-    @FutureOrPresent(message = "A data inicial não pode estar no passado")
+   
     @Column(name="age_dt_data_hora_inicial")
     private LocalDateTime horaInicial;
     

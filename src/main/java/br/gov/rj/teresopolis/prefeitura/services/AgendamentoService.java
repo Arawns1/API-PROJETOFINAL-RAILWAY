@@ -249,47 +249,50 @@ public class AgendamentoService {
 		agendamento.setHoraFinal(agendamentoRequestDto.getHoraFinal());
 		agendamento.setPessoa(pessoa);
 		agendamento.setServico(servico);
-
-		Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
-		if (!(anexos == null) || anexos.size() > 0) {
-			anexos.stream().map(anexo -> {
-				anexo.setAgendamento(agendamentoSalvo);
-				return anexo;
-			}).collect(Collectors.toList());
-			anexoRepository.saveAll(anexos);
-		}
-
-		// Envia os emails
 		try {
-			mailService.enviarCalendario(agendamentoSalvo);
-		} catch (MessagingException e) {
-			e.printStackTrace();
+			Agendamento agendamentoSalvo = agendamentoRepository.save(agendamento);
+			if (!(anexos == null) || anexos.size() > 0) {
+				anexos.stream().map(anexo -> {
+					anexo.setAgendamento(agendamentoSalvo);
+					return anexo;
+				}).collect(Collectors.toList());
+				anexoRepository.saveAll(anexos);
+			}
+
+			// Envia os emails
+			try {
+				mailService.enviarCalendario(agendamentoSalvo);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+
+			String formattedText;
+			if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 11) {
+				// É um CPF
+				formattedText = agendamentoSalvo.getPessoa().getCpfCnpj().replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})",
+						"$1.$2.$3-$4");
+			} else if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 14) {
+				// É um CNPJ
+				formattedText = agendamentoSalvo.getPessoa().getCpfCnpj()
+						.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
+			} else {
+				// Caso contrário, não é um CPF nem CNPJ válido
+				formattedText = agendamentoSalvo.getPessoa().getCpfCnpj();
+			}
+
+			DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			DateTimeFormatter horaFormatada = DateTimeFormatter.ofPattern("HH:mm");
+
+			String data = (agendamentoSalvo.getHoraInicial()).format(dataFormatada);
+			String hora = (agendamentoSalvo.getHoraInicial()).format(horaFormatada);
+
+			AgendamentoResponseDTO response = new AgendamentoResponseDTO();
+			return new AgendamentoResponseDTO(agendamentoSalvo.getAgendamentoId(), agendamentoSalvo.getServico().getNome(),
+					agendamentoSalvo.getPessoa().getNomeRazaoSocial(), formattedText, data, hora);
+		}catch(Exception error) {
+			throw new NoSuchElementException("Não foi possível realizar o agendamento." + error.getMessage());
 		}
-
-		String formattedText;
-		if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 11) {
-			// É um CPF
-			formattedText = agendamentoSalvo.getPessoa().getCpfCnpj().replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})",
-					"$1.$2.$3-$4");
-		} else if (agendamentoSalvo.getPessoa().getCpfCnpj().length() == 14) {
-			// É um CNPJ
-			formattedText = agendamentoSalvo.getPessoa().getCpfCnpj()
-					.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
-		} else {
-			// Caso contrário, não é um CPF nem CNPJ válido
-			formattedText = agendamentoSalvo.getPessoa().getCpfCnpj();
-		}
-
-		DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		DateTimeFormatter horaFormatada = DateTimeFormatter.ofPattern("HH:mm");
-
-		String data = (agendamentoSalvo.getHoraInicial()).format(dataFormatada);
-		String hora = (agendamentoSalvo.getHoraInicial()).format(horaFormatada);
-
-		AgendamentoResponseDTO response = new AgendamentoResponseDTO();
-
-		return new AgendamentoResponseDTO(agendamentoSalvo.getAgendamentoId(), agendamentoSalvo.getServico().getNome(),
-				agendamentoSalvo.getPessoa().getNomeRazaoSocial(), formattedText, data, hora);
+		
 	}
 
 	/**
