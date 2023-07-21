@@ -19,11 +19,10 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "orgao")
-@JsonIdentityInfo(
-		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "orgaoId",
-		scope = Orgao.class
-	)
+/*
+ * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
+ * property = "orgaoId", scope = Orgao.class )
+ */
 public class Orgao {
 	
 	@Id
